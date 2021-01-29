@@ -1,0 +1,68 @@
+<resources>
+    <string-array name="format_entries">
+        <item>@string/list_pref01_entry01</item>
+        <item>@string/list_pref01_entry02</item>
+        <item>@string/list_pref01_entry03</item>
+        <item>@string/list_pref01_entry04</item>
+        <item>@string/list_pref01_entry05</item>
+        <item>@string/list_pref01_entry06</item>
+    </string-array>
+    <string-array name="format_values">
+        <item>@string/list_pref01_value01</item>
+        <item>@string/list_pref01_value02</item>
+        <item>@string/list_pref01_value03</item>
+        <item>@string/list_pref01_value04</item>
+        <item>@string/list_pref01_value05</item>
+        <item>@string/list_pref01_value06</item>
+    </string-array>
+
+    <string-array name="capture_entries">
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+    </string-array>
+
+    <string-array name="capture_values">
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+    </string-array>
+
+    <string-array name="stroke_width_entries">
+        <item>@string/seek_bar01_entry01</item>
+        <item>@string/seek_bar01_entry02</item>
+        <item>@string/seek_bar01_entry03</item>
+        <item>@string/seek_bar01_entry04</item>
+        <item>@string/seek_bar01_entry05</item>
+    </string-array>
+
+    <string-array name="stroke_width_values">
+        <item>1.0</item>
+        <item>2.0</item>
+        <item>3.0</item>
+        <item>4.0</item>
+        <item>5.0</item>
+    </string-array>
+
+    <string-array name="plot_colors_entries">
+        <item>@string/list_pref3_entry01</item>
+        <item>@string/list_pref3_entry02</item>
+        <item>@string/list_pref3_entry03</item>
+        <item>@string/list_pref3_entry04</item>
+        <item>@string/list_pref3_entry05</item>
+        <item>@string/list_pref3_entry06</item>
+        <item>@string/list_pref3_entry07</item>
+    </string-array>
+
+    <string-array name="plot_colors_values">
+        <item>-1</item>
+        <item>-16776961</item>
+        <item>-16711936</item>
+        <item>-65536</item>
+        <item>-19456</item>
+        <item>-65281</item>
+        <item>-256</item>
+    </string-array>
+</resources>

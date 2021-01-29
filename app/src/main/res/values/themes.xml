@@ -1,0 +1,61 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.AudioSpectrum.var1" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/grigioMoltoScuro</item>
+        <item name="colorPrimaryVariant">@color/grigioScuro</item>
+        <item name="colorOnPrimary">@color/bianco</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/arancione</item>
+        <item name="colorSecondaryVariant">@color/arancioneScuro</item>
+        <item name="colorOnSecondary">@color/verdeAcqua</item>
+        <!-- Surface color -->
+        <item name="colorSurface">@color/grigio</item>        <!-- colore sfondo Dialog-->
+        <item name="colorOnSurface">@color/grigioMoltoScuro</item>
+        <item name="colorOnError">@color/rosso</item>
+        <!-- Status bar color. -->
+        <!--item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant-->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/nero</item>
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">?attr/colorPrimaryVariant</item>
+        <item name="android:textColor">@color/bianco</item>
+        <item name="android:textColorPrimary">@color/bianco</item>
+        <item name="android:textColorSecondary">@color/grigioChiaro</item>
+        <item name="colorControlHighlight">?attr/colorSecondaryVariant</item>
+        <item name="rippleColor">@color/nero</item>
+        <!--Elementi EditText (ed EditTextPreference)-->
+        <item name="alertDialogTheme">@style/TestAlertDialogTheme</item>
+        <!--item name="android:windowBackground">@color/grigioMoltoScuro</item>
+        <item name="android:editTextBackground">?attr/colorPrimaryVariant</item>
+        <item name="android:editTextColor">@color/rosso</item-->
+    </style>
+
+    <style name="Theme.AudioSpectrum.var2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/grigio</item>
+        <item name="colorPrimaryVariant">@color/verdeScuro</item>
+        <item name="colorOnPrimary">@color/bianco</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/verdeAccesoChiaro</item>
+        <item name="colorSecondaryVariant">@color/verdeAccesoChiaroChiaro</item>
+        <item name="colorOnSecondary">@color/bianco</item>
+        <!-- Surface color -->
+        <item name="colorSurface">@color/grigio</item>        <!-- colore sfondo Dialog-->
+        <item name="colorOnSurface">@color/grigioMoltoScuro</item>
+        <item name="colorOnError">@color/rosso</item>
+        <!-- Status bar color. -->
+        <!--item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant-->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/grigioScuro</item>
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">?attr/colorPrimaryVariant</item>
+        <item name="android:textColor">@color/bianco</item>
+        <item name="android:textColorPrimary">@color/bianco</item>
+        <item name="android:textColorSecondary">@color/grigioChiaro</item>
+        <item name="colorControlHighlight">?attr/colorSecondaryVariant</item>
+        <item name="rippleColor">@color/nero</item>
+    </style>
+</resources>

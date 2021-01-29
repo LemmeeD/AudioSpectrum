@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!-- INSERITI -->
+    <color name="rosso">#FF0000</color>
+    <color name="arancione">#FF6600</color>
+    <color name="arancioneScuro">#B64900</color>
+    <color name="grigioMoltoScuro">#222222</color>
+    <color name="grigioScuro">#3E3E3E</color>
+    <color name="grigio">#5C5C5C</color>
+    <color name="grigioChiaro">#7A7A7A</color>
+    <color name="grigioMoltoChiaro">#888888</color>
+    <color name="bianco">#FFFFFF</color>
+    <color name="nero">#000000</color>
+    <color name="verdeAcqua">#00DAC5</color>
+    <color name="verdeAcquaScuro">#008F82</color>
+    <color name="verdeAcceso">#00FF0A</color>
+    <color name="verdeAccesoChiaro">#9900FF0A</color>
+    <color name="verdeAccesoChiaroChiaro">#6300FF0A</color>
+    <color name="verdeScuro">#007004</color>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="edit_text_preference_style" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!--item name="android:windowTitleStyle">@style/dialog_title_style</item-->
+        <item name="android:background">@color/grigioMoltoScuro</item>
+        <item name="backgroundTint">@color/grigioMoltoScuro</item>
+        <item name="backgroundColor">@color/grigioMoltoScuro</item>
+        <item name="android:editTextBackground">?attr/colorPrimaryVariant</item>
+        <item name="android:editTextColor">@color/nero</item>
+    </style>
+
+    <style name="TestAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/grigioScuro</item>
+        <item name="textColorAlertDialogListItem">@color/bianco</item>
+        <item name="colorAccent">@color/verdeAcqua</item>
+    </style>
+</resources>

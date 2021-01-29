@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="myVisualizerView" format="integer">
+        <attr name="myPaintColorRed" format="integer" />
+        <attr name="myPaintColorGreen" format="integer" />
+        <attr name="myPaintColorBlu" format="integer" />
+        <attr name="myStrokeWidth" format="float" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,118 @@
+<resources>
+    <!-- APP NAME -->
+    <string name="app_name">Audio Spectrum</string>
+
+    <!-- ACTIVITY LABELS -->
+    <string name="main_label">Audio Spectrum</string>
+    <string name="settings_label">Settings</string>
+    <string name="player_label">Player</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_activity01">Keep the button pushed down to record</string>
+    <string name="main_activity02">Search a filename here..</string>
+    <string name="main_activity03">List updated</string>
+
+    <!-- PLAYER ACTIVITY -->
+    <string name="player_activity01">Pinch one plot to zoom. Double tap to reset the position.</string>
+
+    <!-- =THER CLASSES -->
+    <!-- FabTouchListener -->
+    <string name="fabtl_class01">Choose a filename:</string>
+    <string name="fabtl_class02">Ok</string>
+    <string name="fabtl_class03">Discard</string>
+
+    <!-- FinalizePositiveRecordingDialog -->
+    <string name="fprd_class01">Overwrite existing file?</string>
+    <string name="fprd_class02">Yes</string>
+    <string name="fprd_class03">Discard</string>
+
+    <!-- RecyclerViewAdapter -->
+    <string name="rva_class01">Delete file: </string>
+
+    <!-- PREFERENCES -->
+    <!-- Preferences: Category -->
+    <string name="pref_cat01_name">Visualization</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat -->
+    <string name="switch_pref01_title">Waveform visualization</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat -->
+    <string name="switch_pref02_title">Fft visualization</string>
+    <!-- Preferences: Category: ListPreferences -->
+    <string name="list_pref02_title">FFT capture size</string>
+    <!-- Preferences: Category: SeekBarPreference -->
+    <string name="seek_barf01_title">Graphic stroke width</string>
+    <string name="seek_barf01_summary">Choose the width of plot\'s width</string>
+    <!-- Preferences: Category: SeekBarPreference: Entries -->
+    <string name="seek_bar01_entry01">Very Small</string>
+    <string name="seek_bar01_entry02">Small</string>
+    <string name="seek_bar01_entry03">Medium</string>
+    <string name="seek_bar01_entry04">Large</string>
+    <string name="seek_bar01_entry05">Very large</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat -->
+    <string name="switch_pref03_title">Graphic element to draw</string>
+    <string name="switch_pref03_01">Lines</string>
+    <string name="switch_pref03_02">Points</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat -->
+    <string name="switch_pref04_title">FFT configuration to draw</string>
+    <string name="switch_pref04_summary">Choose to visualize FFt as Real/Imaginary (OFF) of Magnitude/Phase (ON)</string>
+    <!-- Preferences: Category: ListPreferences -->
+    <string name="list_pref03_title">Waveform plot color</string>
+    <string name="list_pref3_entry01">White</string>
+    <string name="list_pref3_entry02">Blue</string>
+    <string name="list_pref3_entry03">Green</string>
+    <string name="list_pref3_entry04">Red</string>
+    <string name="list_pref3_entry05">Orange</string>
+    <string name="list_pref3_entry06">Purple</string>
+    <string name="list_pref3_entry07">Yellow</string>
+    <!-- Preferences: Category: ListPreferences -->
+    <string name="list_pref04_title">FFT first representation plot color</string>
+    <!-- Preferences: Category: ListPreferences -->
+    <string name="list_pref05_title">FFT second representation plot color</string>
+    <!-- Preferences: Category: EditText -->
+    <string name="edit_text01_title">Visualization update rate</string>
+    <string name="edit_text01_summary">Set the rate at which the visualizer update plots [in mHz]</string>
+    <string name="edit_text01_dialog_title">Set the rate at which the visualizer update plots [in mHz]:</string>
+    <string name="edit_text01_err">Insert an integer number less than 20000</string>
+
+
+    <!-- Preferences: Category -->
+    <string name="pref_cat02_name">Audio</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat -->
+    <string name="list_pref01_title">Choose format/encoder:</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat: Entries -->
+    <string name="list_pref01_entry01">Format:3GPP, Encoder:AAC-ELD</string>
+    <string name="list_pref01_entry02">Format:AAC, Encoder:AAC-ELD</string>
+    <string name="list_pref01_entry03">Format:3GPP, Encoder:AMR-WB</string>
+    <string name="list_pref01_entry04">Format:AMR-WB, Encoder:AMR-WB</string>
+    <string name="list_pref01_entry05">Format:3GPP, Encoder:AMR-NB</string>
+    <string name="list_pref01_entry06">Format:AMR-NB, Encoder:AMR-NB</string>
+    <!-- Preferences: Category: SwitchPreferenceCompat: Values -->
+    <string name="list_pref01_value01" translatable="false">AAC_ELD__THREE_GPP</string>
+    <string name="list_pref01_value02" translatable="false">AAC_ELD__AAC</string>
+    <string name="list_pref01_value03" translatable="false">AMR_WB__THREE_GPP</string>
+    <string name="list_pref01_value04" translatable="false">AMR_WB__AMR</string>
+    <string name="list_pref01_value05" translatable="false">AMR_NB__THREE_GPP</string>
+    <string name="list_pref01_value06" translatable="false">AMR_NB__AMR</string>
+    <!-- Preferences: Category -->
+    <string name="pref_cat03_name">Graphics</string>
+    <string name="list_pref06_title">FFT configuration</string>
+    <string name="list_pref06_summary">Choose the configuration used for FFT representation</string>
+    <string name="list_pref06_entry01">Magnitude/Phase</string>
+    <string name="list_pref06_entry02">Real/Imaginary</string>
+
+    <!-- UTILS -->
+    <string name="utils01">Playing: </string>
+    <string name="utils02">Paused</string>
+    <string name="utils03">Finished</string>
+    <string name="utils04">Help</string>
+    <string name="utils05">Yes</string>
+    <string name="utils06">No</string>
+    <string name="utils07">Stopped</string>
+    <string name="utils08" translatable="false">true</string>
+    <string name="utils09" translatable="false">false</string>
+    <string name="utils10">FFT: magnitude</string>
+    <string name="utils11">FFT: phase</string>
+    <string name="utils12">Waveform</string>
+    <string name="utils13">FFT: real part</string>
+    <string name="utils14">FFT: imaginary part</string>
+
+</resources>

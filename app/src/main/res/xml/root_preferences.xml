@@ -1,0 +1,98 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory app:title="@string/pref_cat01_name">
+        <!-- BOOLEAN: disegnare WaveForm? -->
+        <SwitchPreferenceCompat
+            app:key="key_visualization_waveform"
+            app:title="@string/switch_pref01_title"
+            android:defaultValue="true"/>
+
+        <!-- BOOLEAN: disegnare Fft? -->
+        <SwitchPreferenceCompat
+            app:key="key_visualization_fft"
+            app:title="@string/switch_pref02_title"
+            android:defaultValue="true"/>
+
+        <!-- BOOLEAN: disegnare la fft m/a o r/i? -->
+        <SwitchPreferenceCompat
+            app:key="key_fft_graphic"
+            app:title="@string/list_pref06_title"
+            android:defaultValue="true"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="key_visualization_rate"
+            app:title="@string/edit_text01_title"
+            app:summary="@string/edit_text01_summary"
+            app:dialogMessage="@string/edit_text01_dialog_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="10000"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_cat03_name">
+        <!-- BOOLEAN: disegnare punti o linee? -->
+        <SwitchPreferenceCompat
+            app:key="key_visualization_graphic"
+            app:title="@string/switch_pref03_title"
+            android:defaultValue="true" />
+
+        <!-- INT-FLOAT: grossezza traccia -->
+        <ListPreference
+            app:entries="@array/stroke_width_entries"
+            app:entryValues="@array/stroke_width_values"
+            app:key="key_stroke_width"
+            app:title="@string/seek_barf01_title"
+            app:summary="@string/seek_barf01_summary"
+            android:defaultValue="2.0" />
+
+        <!-- INT: colore waveform? -->
+        <ListPreference
+            android:defaultValue="-16776961"
+            app:entries="@array/plot_colors_entries"
+            app:entryValues="@array/plot_colors_values"
+            app:key="key_color_waveform"
+            app:title="@string/list_pref03_title"
+            app:dependency="key_visualization_waveform"
+            app:useSimpleSummaryProvider="true"  />
+        <!-- INT: colore fft1? -->
+        <ListPreference
+            android:defaultValue="-65536"
+            app:entries="@array/plot_colors_entries"
+            app:entryValues="@array/plot_colors_values"
+            app:key="key_color_fft1"
+            app:title="@string/list_pref04_title"
+            app:dependency="key_visualization_fft"
+            app:useSimpleSummaryProvider="true"  />
+        <!-- INT: colore fft2? -->
+        <ListPreference
+            android:defaultValue="-19456"
+            app:entries="@array/plot_colors_entries"
+            app:entryValues="@array/plot_colors_values"
+            app:key="key_color_fft2"
+            app:title="@string/list_pref05_title"
+            app:dependency="key_visualization_fft"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_cat02_name">
+        <!-- STRING-ENUM: formato audio registrato? -->
+        <ListPreference
+            app:entries="@array/format_entries"
+            app:entryValues="@array/format_values"
+            app:key="key_format"
+            app:title="@string/list_pref01_title"
+            app:useSimpleSummaryProvider="true"
+            android:defaultValue="AMR_NB__THREE_GPP"
+            app:defaultValue="AMR_NB__THREE_GPP"/>
+
+        <!-- INT: capture size? -->
+        <ListPreference
+            android:defaultValue="1024"
+            app:entries="@array/capture_entries"
+            app:entryValues="@array/capture_values"
+            app:key="key_capture_size"
+            app:title="@string/list_pref02_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
