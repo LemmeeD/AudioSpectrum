@@ -60,13 +60,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogDebug.log("onCreate");
         userDataDirectory = this.getFilesDir();
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(myToolbar);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_ALL);
-        LogDebug.log("--- MainActivity ---");
         button = findViewById(R.id.recording_fab);
         LogDebug.log("Directory is: " + userDataDirectory);
 
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        LogDebug.log("onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
@@ -96,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        LogDebug.log("onCreateOptionsMenu");
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        LogDebug.log("onStart");
         //BINDINGS
         button.setOnTouchListener(new RecordingButtonTouchListener());
         RecyclerView recyclerView = findViewById(R.id.filez);
@@ -160,26 +155,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LogDebug.log("onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogDebug.log("onDestroy");
         this.finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogDebug.log("onPause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LogDebug.log("onResume");
     }
 
     @Override

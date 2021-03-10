@@ -18,6 +18,7 @@
             app:key="key_fft_graphic"
             app:title="@string/list_pref06_title"
             android:defaultValue="true"
+            android:dependency="key_visualization_fft"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
