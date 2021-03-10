@@ -114,5 +114,9 @@
     <string name="utils12">Waveform</string>
     <string name="utils13">FFT: real part</string>
     <string name="utils14">FFT: imaginary part</string>
+    <string name="utils15">amplitude</string>
+    <string name="utils16">magnitude</string>
+    <string name="utils17">phase [rad]</string>
+    <string name="utils18">frequency</string>
 
 </resources>

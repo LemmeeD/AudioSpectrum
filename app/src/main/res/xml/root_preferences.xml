@@ -32,10 +32,12 @@
 
     <PreferenceCategory app:title="@string/pref_cat03_name">
         <!-- BOOLEAN: disegnare punti o linee? -->
+        <!--
         <SwitchPreferenceCompat
             app:key="key_visualization_graphic"
             app:title="@string/switch_pref03_title"
             android:defaultValue="true" />
+            -->
 
         <!-- INT-FLOAT: grossezza traccia -->
         <ListPreference

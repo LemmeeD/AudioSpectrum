@@ -70,4 +70,8 @@
     <string name="utils12">Forma d\'onda</string>
     <string name="utils13">FFT: parte reale</string>
     <string name="utils14">FFT: parte immaginaria</string>
+    <string name="utils15">ampiezza</string>
+    <string name="utils16">modulo</string>
+    <string name="utils17">fase [rad]</string>
+    <string name="utils18">frequenza</string>
 </resources>

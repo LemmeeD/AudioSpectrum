@@ -40,6 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        /*
         SwitchPreferenceCompat switchPref2 = findPreference("key_visualization_graphic");
         if (switchPref2.isChecked()) {
             switchPref2.setSummary(R.string.switch_pref03_01);
@@ -56,6 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             return true;
         });
+         */
 
         EditTextPreference editText = findPreference("key_visualization_rate");
         editText.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -76,7 +78,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
-
+        //Impossible to make Seekbars work...
         /*SeekBarPreference seekBar = ((SeekBarPreference) findPreference("key_stroke_width"));
         seekBar.setMin(1);
         seekBar.setMax(5);

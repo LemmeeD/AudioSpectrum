@@ -46,4 +46,45 @@ public class RobeUtiliTrovateOnline {
         }
     }
     */
+
+    /*
+    //metodo scritto nella MainActivity per testare un minimo la concorrenza come in vecchie lezioni. Probabilmente scritto per niente...
+        private synchronized static void testCallablesCuncurrency() {
+        ExecutorService service = Executors.newCachedThreadPool();
+        List<Callable<Void>> callables = new LinkedList<>();
+        callables.add(new Callable() {
+            @Override
+            public Void call() {
+                for (int i=0; i<51; i++) {
+                    LogDebug.log(Integer.toString(i));
+                }
+                return null;
+            }
+        });
+        callables.add(new Callable() {
+            @Override
+            public Void call() {
+                for (int i=100; i<151; i++) {
+                    LogDebug.log(Integer.toString(i));
+                }
+                return null;
+            }
+        });
+        try {
+            List<Future<Void>> futures = service.invokeAll(callables);
+            int count = 1;
+            for (Future<Void> f: futures) {
+                Void result = f.get();
+                LogDebug.log("future"+count+" is done? "+f.isDone()+".");
+                count++;
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+     */
 }

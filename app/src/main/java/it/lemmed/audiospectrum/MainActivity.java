@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,13 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import it.lemmed.audiospectrum.audiocollection.RecyclerViewPopulator;
 import it.lemmed.audiospectrum.audiocollection.SearchTextWatcher;
 import it.lemmed.audiospectrum.settings.SettingsActivity;
@@ -40,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
     public static File userDataDirectory;
     public static RecyclerView recyclerView;
     protected static RecyclerViewPopulator populator;
-    private boolean preferencesChanged = true;
-
+    protected static FloatingActionButton button;
     //Permissions
     private boolean permissionToRecordAccepted = false;
     private final String [] permissions = { Manifest.permission.RECORD_AUDIO };
     private static final int REQUEST_ALL = 666;
+
+    //CONSTRUCTORS
 
     //METHODS
     @Override
@@ -56,29 +51,27 @@ public class MainActivity extends AppCompatActivity {
                 permissionToRecordAccepted  = (grantResults[0] == PackageManager.PERMISSION_GRANTED);
                 break;
         }
-        if (!permissionToRecordAccepted) finish();
+        if (!permissionToRecordAccepted) {
+            this.finish();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogDebug.log("onCreate");
         userDataDirectory = this.getFilesDir();
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(myToolbar);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_ALL);
-
         LogDebug.log("--- MainActivity ---");
-
-        FloatingActionButton button = findViewById(R.id.recording_fab);
-        button.setOnTouchListener(new RecordingButtonTouchListener());
-
+        button = findViewById(R.id.recording_fab);
         LogDebug.log("Directory is: " + userDataDirectory);
 
         //FileUtils.deleteFileWithoutName();
         //FileUtils.deleteAllFiles(userDataDirectory.getAbsolutePath());
-
         //testCallablesCuncurrency();
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
@@ -86,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        LogDebug.log("onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
@@ -102,14 +96,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        LogDebug.log("onCreateOptionsMenu");
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        LogDebug.log("onStart");
+        //BINDINGS
+        button.setOnTouchListener(new RecordingButtonTouchListener());
         RecyclerView recyclerView = findViewById(R.id.filez);
         recyclerView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        //Scroll is handled "externally" with RecyclerViews...
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -123,15 +122,16 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.computeScroll();
         MainActivity.recyclerView = recyclerView;
-
+        //RecyclerViewPopulator object that obviously populate the RecyclerView with audio files from the designated directory of the entire app
         populator = new RecyclerViewPopulator(this, recyclerView);
         populator.populateRecyclerView();
-
-        TextView suggeritionText = findViewById(R.id.text_suggerition);
+        //Searchbar handling
+        TextView suggestionText = findViewById(R.id.text_suggerition);
         EditText input = findViewById(R.id.searchText);
-        input.addTextChangedListener(new SearchTextWatcher(this, input, suggeritionText, recyclerView));        //fa il popolate
-
+        input.addTextChangedListener(new SearchTextWatcher(this, input, suggestionText, recyclerView));        //internally everytime a letter changes, it re-populates the RecyclerView
+        //Pretty useless... It can be useful if you add file while th eapp is running in development, maybe using Device File Explorer
         ImageView imageRefresh = findViewById(R.id.image_refresh);
+        //Handling record button
         int[][] states = new int[][] {
                 new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
                 new int[] { -android.R.attr.state_pressed }
@@ -160,60 +160,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        LogDebug.log("onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogDebug.log("onDestroy");
         this.finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        LogDebug.log("onPause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogDebug.log("onResume");
     }
 
-    //synchronized or not??
-    private synchronized static void testCallablesCuncurrency() {
-        ExecutorService service = Executors.newCachedThreadPool();
-        List<Callable<Void>> callables = new LinkedList<>();
-        callables.add(new Callable() {
-            @Override
-            public Void call() {
-                for (int i=0; i<51; i++) {
-                    LogDebug.log(Integer.toString(i));
-                }
-                return null;
-            }
-        });
-        callables.add(new Callable() {
-            @Override
-            public Void call() {
-                for (int i=100; i<151; i++) {
-                    LogDebug.log(Integer.toString(i));
-                }
-                return null;
-            }
-        });
-        try {
-            List<Future<Void>> futures = service.invokeAll(callables);
-            int count = 1;
-            for (Future<Void> f: futures) {
-                Void result = f.get();
-                LogDebug.log("future"+count+" is done? "+f.isDone()+".");
-                count++;
-            }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            this.reInitialize();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            this.reInitialize();
         }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+    }
+
+    private void reInitialize() {
+        setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(myToolbar);
+        button = findViewById(R.id.recording_fab);
+        this.onStart();
     }
 }

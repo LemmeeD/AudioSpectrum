@@ -36,4 +36,20 @@ public class StringUtils {
             return null;
         }
     }
+
+    //f frequency
+    public static String returnStringifiedFrequency(double f) {
+        if (f < 1000) {
+            return Long.toString(Math.round(f))+" mHz";
+        }
+        else if ((f >= 1000) && (f < 1000000)) {
+            return Long.toString(Math.round(f/1000.0))+" Hz";
+        }
+        else if ((f >= 1000000) && (f < 1000000000)) {
+            return Long.toString(Math.round(f/1000000.0))+ " kHz";
+        }
+        else {
+            return null;
+        }
+    }
 }
