@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,7 +55,7 @@ public class PlayerActivity extends AppCompatActivity {
     protected TextView textFilename;
     protected TextView textDuration;
     protected TextView textSampling;
-    protected ConstraintLayout layoutContainer;
+    protected LinearLayout layoutContainer;
     protected ConstraintLayout layoutControls;
     //Views for live plots
     protected GraphView graph1; //waveform
