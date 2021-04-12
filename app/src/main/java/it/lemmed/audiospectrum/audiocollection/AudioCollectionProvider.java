@@ -172,7 +172,7 @@ public class AudioCollectionProvider {
             else {
                 List<RowRecord> records = new LinkedList<>();
                 for (int i = 0; i < files.length; i++) {
-                    if (files[i].getName().contains(nameToSearch)) {
+                    if ( (files[i].getName().contains(nameToSearch)) || (files[i].getName().contains(nameToSearch.toLowerCase())) ) {
                         records.add(new RowRecord(
                                 Formats.stripFromExtension(files[i].getName()),
                                 Formats.getExtensionFromFilename(files[i].getName(), true),

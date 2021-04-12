@@ -15,10 +15,12 @@ import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +32,7 @@ import it.lemmed.audiospectrum.LogDebug;
 import it.lemmed.audiospectrum.R;
 import it.lemmed.audiospectrum.settings.SettingsFragment;
 import it.lemmed.audiospectrum.utils.FileUtils;
+import it.lemmed.audiospectrum.utils.NumberUtils;
 import it.lemmed.audiospectrum.utils.StringUtils;
 import it.lemmed.audiospectrum.utils.GraphViewUtils;
 
@@ -55,8 +58,10 @@ public class PlayerActivity extends AppCompatActivity {
     protected TextView textFilename;
     protected TextView textDuration;
     protected TextView textSampling;
+    protected SeekBar progressBar;
     protected LinearLayout layoutContainer;
     protected ConstraintLayout layoutControls;
+    protected int currentPosition;
     //Views for live plots
     protected GraphView graph1; //waveform
     protected GraphView graph2; //fft 1
@@ -65,34 +70,82 @@ public class PlayerActivity extends AppCompatActivity {
     protected BaseSeries<DataPoint> series1;    //waveform
     protected BaseSeries<DataPoint> series2;    //fft 1
     protected BaseSeries<DataPoint> series3;    //fft 2
+    //static icons for buttons
     protected static int playIcon = R.drawable.ic_baseline_play_arrow_24;
     protected static int pauseIcon = R.drawable.ic_baseline_pause_24;
+    //infos
     protected int rate;
     protected int samplingRate; //of the audio file
-    //protected boolean graphic;  //DEPRECATED. Boolean to set if views should plot points or lines... Feature almost completely removed
     protected boolean fftConf;  //true: fft will be displayed as magnitdue/phase, false: fft will be displayed as real part/imaginary part
     protected float strokeWidth;
     protected int fftSize;  //set the captureSize of the Visualizer object
+    //handling progress bar
+    private Handler handler = new Handler();
+
 
     //CONSTRUCTORS
 
     //METHODS
     @SuppressLint("UseCompatLoadingForDrawables")
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.initCreate();
+        LogDebug.log("PlayerActivity: onCreate()");
+        this.initCreate(-1);
+
+        /*
+        String id = "666666";
+        NotificationChannel nc = new NotificationChannel(id, "Bar player notification", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(nc);
+        Notification notification = new Notification.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_baseline_play_circle_6)
+                .setContentTitle("My notification")
+                .setContentText("Much longer text that cannot fit one line...")
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .build();
+
+
+        this.tempIntent = initServiceMediaPlayer(this, this.filename);
+         */
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        LogDebug.log("PlayerActivity: onStart()");
+    }
+
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogDebug.log("PlayerActivity: onResume()");
+        this.initResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogDebug.log("PlayerActivity: onPause()");
+        if (this.player.isPlaying()) {
+            this.currentPosition = this.player.getCurrentPosition();
+            this.player.pause();
+        }
+        try {
+            this.visualizer.setEnabled(false);
+        }
+        catch (IllegalStateException e) {
+            LogDebug.log("onStop --> "+e.getMessage());
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        LogDebug.log("PlayerActivity: onStop()");
         try {
             this.player.stop();
         }
@@ -114,31 +167,10 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.visualizer = null;
+        LogDebug.log("PlayerActivity: onDestroy()");
         this.player = null;
+        this.deallocateBindings();
         this.finish();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (this.player.isPlaying()) {
-            this.player.pause();
-        }
-        try {
-            this.visualizer.setEnabled(false);
-        }
-        catch (IllegalStateException e) {
-            LogDebug.log("onStop --> "+e.getMessage());
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.initResume();
     }
 
     @Override
@@ -164,72 +196,42 @@ public class PlayerActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (this.player.isPlaying()) {
-                this.visualizer.setEnabled(false);
-                this.visualizer.setDataCaptureListener(null, this.rate, false, false);
-                this.visualizer.release();
-                int currentPosition = this.player.getCurrentPosition();
-                this.player.pause();
-                this.player.stop();
-                this.player.release();
-                this.initCreate();
-                this.reInitResume(currentPosition);
-            }
-            else {
-                this.visualizer.setEnabled(false);
-                this.visualizer.setDataCaptureListener(null, this.rate, false, false);
-                this.player.stop();
-                this.visualizer.release();
-                int currentPosition = this.player.getCurrentPosition();
-                this.player.release();
-                this.initCreate();
-                this.reInitResume(currentPosition);
-            }
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (this.player.isPlaying()) {
-                this.visualizer.setEnabled(false);
-                this.visualizer.setDataCaptureListener(null, this.rate, false, false);
-                this.player.pause();
-                this.player.stop();
-                this.visualizer.release();
-                int currentPosition = this.player.getCurrentPosition();
-                this.player.pause();
-                this.player.release();
-                this.initCreate();
-                this.reInitResume(currentPosition);
-            }
-            else {
-                this.visualizer.setEnabled(false);
-                this.visualizer.setDataCaptureListener(null, this.rate, false, false);
-                this.player.stop();
-                this.visualizer.release();
-                int currentPosition = this.player.getCurrentPosition();
-                this.player.release();
-                this.initCreate();
-                this.reInitResume(currentPosition);
-            }
+            this.deallocateBindings();
+            this.initCreate(this.samplingRate);
+            this.reInitResume();
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            this.deallocateBindings();
+            this.initCreate(this.samplingRate);
+            this.reInitResume();
         }
     }
 
     //AUXILIARY METHODS
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initCreate() {
+    private void initCreate(int sampleRate) {       //int argument not very elegant..
+        LogDebug.log("PlayerActivity: initCreate()");
         setContentView(R.layout.activity_player);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_player);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        this.firstStart = true;
+        //Bindings
         this.fabPlayPause = findViewById(R.id.fab_play_pause);
         this.fabPrevious = findViewById(R.id.fab_previous);
         this.fabNext = findViewById(R.id.fab_next);
+        //PRESSED state has more 'priority' than ENABLED, so if you define a color for NOT PRESSED, the color you defined for ENABLED will never be shown.. Can be done with a XML selector.
         int[][] states = new int[][] {
-                new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
-                new int[] { -android.R.attr.state_pressed }
+                new int[] { android.R.attr.state_pressed },
+                //new int[] { -android.R.attr.state_pressed },
+                new int[] { android.R.attr.state_enabled },
+                new int[] { -android.R.attr.state_enabled }
         };
         int[] colors = new int[] {
                 this.getResources().getColor(R.color.verdeAcqua),
-                this.getResources().getColor(R.color.arancione)
+                //this.getResources().getColor(R.color.arancione),
+                this.getResources().getColor(R.color.arancione),
+                this.getResources().getColor(R.color.arancioneScuro)
         };
         this.fabPlayPause.setBackgroundTintList(new ColorStateList(states, colors));
         this.fabPrevious.setBackgroundTintList(new ColorStateList(states, colors));
@@ -237,29 +239,55 @@ public class PlayerActivity extends AppCompatActivity {
         this.textFilename = findViewById(R.id.text_filename);
         this.textDuration = findViewById(R.id.text_duration);
         this.textFormat = findViewById(R.id.text_format);
-        this.filename = getIntent().getStringExtra("nome_file");
-        this.stringPosition = getIntent().getStringExtra("position");
-        this.stringExtension = getIntent().getStringExtra("extension");
-        this.stringDuration = getIntent().getStringExtra("duration");
         this.layoutContainer = findViewById(R.id.layout_container);
         this.layoutControls = findViewById(R.id.layout_controls);
         this.textSampling = findViewById(R.id.text_sampling);
+        this.progressBar = findViewById(R.id.progress_bar);
+        this.currentPosition = -1;
+        //Getting info from preferences
+        if ((this.filename == null) && (this.stringDuration == null) && (this.stringExtension == null) && (this.stringPosition == null)) {
+            //first start of the activity
+            this.firstStart = true;
+            this.filename = getIntent().getStringExtra("nome_file");
+            this.stringPosition = getIntent().getStringExtra("position");
+            this.stringExtension = getIntent().getStringExtra("extension");
+            this.stringDuration = getIntent().getStringExtra("duration");
+        }
+        else {
+            LogDebug.log("TEEEEEEEEST");
+            this.firstStart = false;
+            //means that the configuration was changed and to reset everything we don't want to use the information of the intent which was the initial song that was meant to be played,
+            //because maybe the next/previous button was pressed. So we want the next/previous if it was selected. In that case the 4 variable are set externally through the setter methods of this activity
+        }
         //Settings
         SharedPreferences preferences = this.getSharedPreferences(SettingsFragment.SETTINGS_SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-        this.strokeWidth = Float.parseFloat(preferences.getString("key_stroke_width", "2.0"));
+        //this.strokeWidth = Float.parseFloat(preferences.getString("key_stroke_width", "2.0"));
         int colorWaveform = Integer.parseInt(preferences.getString("key_color_waveform", "-16776961"));
         int colorFft2 = Integer.parseInt(preferences.getString("key_color_fft1", "-65536"));
         int colorFft3 = Integer.parseInt(preferences.getString("key_color_fft2", "-19456"));
+        LogDebug.log("TEST: SeekBarPreference = "+preferences.getInt("test", 2)+", so after conversion is = "+NumberUtils.returnStrokeWidth(preferences.getInt("test", 2)));
+        this.strokeWidth = NumberUtils.returnStrokeWidth(preferences.getInt("test", 2));
         this.visualizeWaveform = preferences.getBoolean("key_visualization_waveform", true);
         this.visualizeFft = preferences.getBoolean("key_visualization_fft", true);
         this.fftConf = preferences.getBoolean("key_fft_graphic", true);
         this.fftSize = Integer.parseInt(preferences.getString("key_capture_size", "1024"));
         this.rate = Integer.parseInt(preferences.getString("key_visualization_rate", "10000"));
-        //TEMPORARY SOLUTION: allocating here player and visualizer to get sampling rate.. To be visualized after in the TextView. NOT VERY ELEGANT because allocating this objects is done in the onResume() method...
-        //But cannot get sampling rate from MediaPlayer object...
-        this.player = MediaPlayer.create(this, FileUtils.seekUriFromFilename(filename));
-        this.visualizer = new Visualizer(player.getAudioSessionId());
-        this.samplingRate = visualizer.getSamplingRate();
+        //TEMPORARY SOLUTION: allocating here a temporary player and visualizer to get sampling rate.. To be visualized after in the TextView. NOT VERY ELEGANT because allocating this objects is done in the onResume() method...
+        //But cannot get sampling rate from MediaPlayer object... Visualizer is needed
+        if (sampleRate <= 0) {
+            //first call of method
+            MediaPlayer tempPlayer = MediaPlayer.create(this, FileUtils.seekUriFromFilename(filename));
+            Visualizer tempVisualizer = new Visualizer(tempPlayer.getAudioSessionId());
+            this.samplingRate = tempVisualizer.getSamplingRate();
+            tempPlayer.release();
+            tempPlayer = null;
+            tempVisualizer.release();
+            tempVisualizer = null;
+        }
+        else {
+            //a valid int argument means this call of initCreate() is used after the creation of the Activity, which it only means that the configuration has changed ==> LANDSCAPE or PORTRAIT
+            this.samplingRate = sampleRate;
+        }
         //Handling plots on screen
         if (this.visualizeWaveform) {
             //Waveform graph
@@ -322,77 +350,183 @@ public class PlayerActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initResume() {
+        LogDebug.log("PlayerActivity: initResume()");
         //Handling playback
         this.player = MediaPlayer.create(this, FileUtils.seekUriFromFilename(this.filename));
+        if ( !(this.currentPosition < 0) ) {
+            this.player.seekTo(this.currentPosition);
+        }
         this.visualizer = new Visualizer(this.player.getAudioSessionId());
         this.visualizer.setCaptureSize(this.fftSize);
         /*
             Here the implementation of a Visualizer.OnDataCaptureListener object takes care of managing the byte[] given from the internal methods and draws everything on the views passed as arguments.
-            Everything is done at a rate set by settings (max 20000 ms), which is a property of the Visualizer object. Rendering's job is not handle in different threads...
+            Everything is done at a rate set by settings (max 20000 ms), which is a property of the Visualizer object. Rendering's job is not handled in different threads...
             ---> temporary solution?
-            So the Visualizer object at a certain rate gives in the Visualizer.OnDataCaptureListener's object methods the waveform and the fft byte[] which are long according to the captureSize.
+            So the Visualizer object at a certain rate gives in the Visualizer.OnDataCaptureListener's object methods the waveform and the fft byte[] which length is set according to the captureSize variable here,
+            which it is also a property of the Visualizer object.
         */
         this.visualizer.setDataCaptureListener(new PlayerOnDataCaptureListener(this.graph1, this.graph2, this.graph3, this.series1, this.series2, this.series3, this.fftConf), this.rate, this.visualizeWaveform, this.visualizeFft);
         this.samplingRate = this.visualizer.getSamplingRate();  //again
         //setting TextView on screen for audio file infos
         this.textSampling.setText(StringUtils.returnStringifiedSamplingRate(this.visualizer.getSamplingRate()));
-        this.textFormat.setText("/"+stringExtension);
+        this.textFormat.setText("/"+this.stringExtension);
         this.visualizer.setEnabled(true);
         //setting button img
         this.fabPlayPause.setImageResource(playIcon);
         this.textFilename.setText(getResources().getString(R.string.utils07));
-        this.textDuration.setText(stringDuration);
+        this.textDuration.setText(this.stringDuration);
+        //set progress bar max
+        this.progressBar.setMax(this.player.getDuration());
         //listener if the song finishes
         this.player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 PlayerActivity.this.textFilename.setText(getResources().getString(R.string.utils03));
                 PlayerActivity.this.fabPlayPause.setImageResource(playIcon);
+                PlayerActivity.this.currentPosition = -1;
             }
         });
         //listeners on buttons
         this.fabPlayPause.setOnClickListener(new PlayPauseOnClickListener(this.player, this.visualizer,  this.textFilename, this.fabPlayPause, playIcon, pauseIcon, this.filename));
         this.fabPrevious.setOnClickListener(new PreviousOnClickListener(this, this.player, this.textFilename, Integer.parseInt(this.stringPosition), playIcon));
         this.fabNext.setOnClickListener(new NextOnClickListener(this, this.player, this.textFilename, Integer.parseInt(this.stringPosition), playIcon));
+        //progress bar
+        this.runOnUiThread(new Runnable() {
+            //FIELDS
+            protected final int period = 500;     //[ms]
+            //CONSTRUCTORS
+            //METHODS
+            @Override
+            public void run() {
+                if(PlayerActivity.this.player != null){
+                    int currentPosition = PlayerActivity.this.player.getCurrentPosition();
+                    PlayerActivity.this.progressBar.setProgress(currentPosition);
+                }
+                PlayerActivity.this.handler.postDelayed(this, period);        //update every 1000 ms = 1 s
+            }
+        });
+        this.progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //FIELDS
+            protected boolean wasPlaying = false;
+            //CONSTRUCTORS
+
+            //METHODS
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                PlayerActivity.this.fabPlayPause.setEnabled(true);
+                PlayerActivity.this.fabPrevious.setEnabled(true);
+                PlayerActivity.this.fabNext.setEnabled(true);
+                if (wasPlaying) {
+                    PlayerActivity.this.player.start();
+                    PlayerActivity.this.visualizer.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                PlayerActivity.this.fabPlayPause.setEnabled(false);
+                PlayerActivity.this.fabPrevious.setEnabled(false);
+                PlayerActivity.this.fabNext.setEnabled(false);
+                if (PlayerActivity.this.player.isPlaying()) {
+                    this.wasPlaying = true;
+                    PlayerActivity.this.player.pause();
+                    PlayerActivity.this.visualizer.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if ((PlayerActivity.this.player != null) && (fromUser)) {
+                    PlayerActivity.this.player.seekTo(progress);
+                }
+            }
+        });
         //firstStart?
         if (this.firstStart) {
-            try {
-                Thread.sleep(750);  //...
-            } catch (InterruptedException e) {
-                LogDebug.log("PlayerActivity: onResume --> Unable to wait 500 ms due to "+e.getMessage());
-            }
             this.fabPlayPause.performClick();
         }
         this.firstStart = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void reInitResume(int currentPosition) {
-        //slightly different from initResume()...
-        player = MediaPlayer.create(this, FileUtils.seekUriFromFilename(filename));
-        player.seekTo(currentPosition);
+    private void reInitResume() {
+        LogDebug.log("PlayerActivity: reInitResume()");
+        //slightly different from initResume()... Without comments
+        this.progressBar.setProgress(this.player.getCurrentPosition());
         this.visualizer = new Visualizer(this.player.getAudioSessionId());
         this.visualizer.setCaptureSize(this.fftSize);
         this.visualizer.setDataCaptureListener(new PlayerOnDataCaptureListener(this.graph1, this.graph2, this.graph3, this.series1, this.series2, this.series3, this.fftConf), this.rate, this.visualizeWaveform, this.visualizeFft);
         this.samplingRate = this.visualizer.getSamplingRate();
-        this.textSampling.setText(StringUtils.returnStringifiedSamplingRate(this.visualizer.getSamplingRate()));
-        this.textFormat.setText("/"+stringExtension);
+        this.textSampling.setText(StringUtils.returnStringifiedSamplingRate(this.samplingRate));
+        this.textFormat.setText("/"+this.stringExtension);
         this.visualizer.setEnabled(true);
-        this.fabPlayPause.setImageResource(playIcon);
-        this.textFilename.setText(getResources().getString(R.string.utils07));
+        if (this.player.isPlaying()) {
+            this.fabPlayPause.setImageResource(pauseIcon);
+            this.textFilename.setText(getResources().getString(R.string.utils01));
+        }
+        else {
+            this.fabPlayPause.setImageResource(playIcon);
+            this.textFilename.setText(getResources().getString(R.string.utils07));
+        }
         this.textDuration.setText(stringDuration);
+        this.progressBar.setMax(this.player.getDuration());
         this.player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 PlayerActivity.this.textFilename.setText(getResources().getString(R.string.utils03));
                 PlayerActivity.this.fabPlayPause.setImageResource(playIcon);
+                PlayerActivity.this.currentPosition = -1;
             }
         });
         this.fabPlayPause.setOnClickListener(new PlayPauseOnClickListener(this.player, this.visualizer,  this.textFilename, this.fabPlayPause, playIcon, pauseIcon, this.filename));
         this.fabPrevious.setOnClickListener(new PreviousOnClickListener(this, this.player, this.textFilename, Integer.parseInt(this.stringPosition), playIcon));
         this.fabNext.setOnClickListener(new NextOnClickListener(this, this.player, this.textFilename, Integer.parseInt(this.stringPosition), playIcon));
+        this.runOnUiThread(new Runnable() {
+            protected final int period = 500;
+
+            @Override
+            public void run() {
+                if(PlayerActivity.this.player != null){
+                    int currentPosition = PlayerActivity.this.player.getCurrentPosition();
+                    PlayerActivity.this.progressBar.setProgress(currentPosition);
+                }
+                PlayerActivity.this.handler.postDelayed(this, period);
+            }
+        });
+        this.progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            protected boolean wasPlaying = false;
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                PlayerActivity.this.fabPlayPause.setEnabled(true);
+                PlayerActivity.this.fabPrevious.setEnabled(true);
+                PlayerActivity.this.fabNext.setEnabled(true);
+                if (wasPlaying) {
+                    PlayerActivity.this.player.start();
+                    PlayerActivity.this.visualizer.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                PlayerActivity.this.fabPlayPause.setEnabled(false);
+                PlayerActivity.this.fabPrevious.setEnabled(false);
+                PlayerActivity.this.fabNext.setEnabled(false);
+                if (PlayerActivity.this.player.isPlaying()) {
+                    this.wasPlaying = true;
+                    PlayerActivity.this.player.pause();
+                    PlayerActivity.this.visualizer.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if ((PlayerActivity.this.player != null) && (fromUser)) {
+                    PlayerActivity.this.player.seekTo(progress);
+                }
+            }
+        });
         this.firstStart = false;
-        this.fabPlayPause.performClick();
     }
 
     public void setFilename(String filename) { this.filename = filename; }
@@ -403,6 +537,22 @@ public class PlayerActivity extends AppCompatActivity {
 
     public void setStringDuration(String duration) { this.stringDuration = duration; }
 
+    protected void deallocateBindings() {
+        this.visualizer.setEnabled(false);
+        this.visualizer.setDataCaptureListener(null, this.rate, false, false);
+        this.visualizer.release();
+        this.progressBar.setOnSeekBarChangeListener(null);
+        this.graph1 = null;
+        this.graph2 = null;
+        this.graph3 = null;
+        this.fabPlayPause = null;
+        this.fabPrevious = null;
+        this.fabNext = null;
+        this.textFilename = null;
+        this.textDuration = null;
+        this.textFormat = null;
+        this.layoutContainer = null;
+        this.layoutControls = null;
+        this.textSampling = null;
+    }
 }
-
-

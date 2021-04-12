@@ -16,20 +16,20 @@ import it.lemmed.audiospectrum.R;
 
 public class SearchTextWatcher implements TextWatcher {
     //FIELDS
-    Context context;
-    EditText input;
-    RecyclerView recyclerView;
-    List<RowRecord> records;
-    RecyclerViewAdapter adapter;
-    TextView suggeritionText;
+    protected Context context;
+    protected EditText input;
+    protected RecyclerViewPopulator populator;
+    protected List<RowRecord> records;
+    protected RecyclerViewAdapter adapter;
+    protected TextView suggeritionText;
 
     //CONSTRUCTORS
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public SearchTextWatcher(Context context, EditText input, TextView suggeritionText, RecyclerView recyclerView) {
+    public SearchTextWatcher(Context context, EditText input, TextView suggeritionText, RecyclerViewPopulator populator) {
         this.context = context;
         this.input = input;
         this.suggeritionText = suggeritionText;
-        this.recyclerView = recyclerView;
+        this.populator = populator;
         //records = AudioCollectionProvider.queryAudioCollection(context);
         records = AudioCollectionProvider.executeQueryFolder();
         this.adapter = new RecyclerViewAdapter(context, records);
@@ -45,12 +45,12 @@ public class SearchTextWatcher implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if ( !(s.equals("")) ) {
-            (new RecyclerViewPopulator(this.context, this.recyclerView)).populateRecyclerView(s.toString());
+            this.populator.populateRecyclerView(s.toString());
             this.suggeritionText.setText("");
 
         }
         else {
-            (new RecyclerViewPopulator(this.context, this.recyclerView)).populateRecyclerView();
+            this.populator.populateRecyclerView();
             this.suggeritionText.setText(suggeritionText.getContext().getResources().getString(R.string.main_activity02));
         }
     }

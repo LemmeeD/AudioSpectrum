@@ -41,13 +41,22 @@
             -->
 
         <!-- INT-FLOAT: grossezza traccia -->
-        <ListPreference
+        <SeekBarPreference
+            android:key="test"
+            android:title="@string/seek_barf01_title"
+            android:summary="@string/seek_barf01_summary"
+            app:min="1"
+            android:max="5"
+            android:defaultValue="2"
+            app:showSeekBarValue="true" />
+
+        <!--ListPreference
             app:entries="@array/stroke_width_entries"
             app:entryValues="@array/stroke_width_values"
             app:key="key_stroke_width"
             app:title="@string/seek_barf01_title"
             app:summary="@string/seek_barf01_summary"
-            android:defaultValue="2.0" />
+            android:defaultValue="2.0" /-->
 
         <!-- INT: colore waveform? -->
         <ListPreference

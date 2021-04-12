@@ -22,14 +22,26 @@ public class RecyclerViewPopulator implements RecyclerViewAdapter.ItemClickListe
     protected RecyclerViewAdapter adapter;
 
     //CONSTRUCTORS
-    public RecyclerViewPopulator(Context context, RecyclerView recyclerView) {
+    protected RecyclerViewPopulator(Context context, RecyclerView recyclerView) {
         this.context = context;
         this.recyclerView = recyclerView;
     }
 
     //METHODS
-    public List<RowRecord> getCurrentPopulation() {
+    public Context getContext() {
+        return this.context;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return this.recyclerView;
+    }
+
+    public List<RowRecord> getRecords() {
         return this.records;
+    }
+
+    public RecyclerViewAdapter getAdapter() {
+        return this.adapter;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -69,5 +81,9 @@ public class RecyclerViewPopulator implements RecyclerViewAdapter.ItemClickListe
         intent.putExtra("extension", this.adapter.getItem(position).getExtension());
         intent.putExtra("duration", this.adapter.getItem(position).getStringifiedDuration());
         MainActivity.recyclerView.getContext().startActivity(intent);
+    }
+
+    public static RecyclerViewPopulator getPopulator(RecyclerView v) {
+        return new RecyclerViewPopulator(v.getContext(), v);
     }
 }

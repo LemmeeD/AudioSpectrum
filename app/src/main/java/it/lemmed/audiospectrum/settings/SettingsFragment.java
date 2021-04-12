@@ -40,25 +40,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        /*
-        SwitchPreferenceCompat switchPref2 = findPreference("key_visualization_graphic");
-        if (switchPref2.isChecked()) {
-            switchPref2.setSummary(R.string.switch_pref03_01);
-        }
-        else {
-            switchPref2.setSummary(R.string.switch_pref03_02);
-        }
-        switchPref2.setOnPreferenceChangeListener((preference, newValue) -> {
-            if (((boolean) newValue)) {
-                switchPref2.setSummary(R.string.switch_pref03_01);
-            }
-            else {
-                switchPref2.setSummary(R.string.switch_pref03_02);
-            }
-            return true;
-        });
-         */
-
         EditTextPreference editText = findPreference("key_visualization_rate");
         editText.setOnPreferenceChangeListener((preference, newValue) -> {
             int parsedInt = -1;
@@ -78,17 +59,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
-        //Impossible to make Seekbars work...
-        /*SeekBarPreference seekBar = ((SeekBarPreference) findPreference("key_stroke_width"));
-        seekBar.setMin(1);
-        seekBar.setMax(5);
-        seekBar.setDefaultValue((int) 2);
-        seekBar.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final int progress = Integer.valueOf(String.valueOf(newValue));
-                preference.setSummary(String.format("My progress value: %d", progress));
-            }
-        });*/
     }
 }

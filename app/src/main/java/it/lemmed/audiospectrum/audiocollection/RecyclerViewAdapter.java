@@ -30,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     //CONSTRUCTORS
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<RowRecord> data) {
+    public RecyclerViewAdapter(Context context, List<RowRecord> data) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -47,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the TextView in each row
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RowRecord rowRecord;
         try {
             rowRecord = data.get(position);
@@ -125,27 +125,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //FIELDS
-        TextView textViewName;
-        TextView textViewType;
-        TextView textViewSize;
-        TextView textViewDuration;
-        FloatingActionButton fab;
+        protected TextView textViewName;
+        protected TextView textViewType;
+        protected TextView textViewSize;
+        protected TextView textViewDuration;
+        protected FloatingActionButton fab;
         //CONSTRUCTORS
         ViewHolder(View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.rowName);
-            textViewType = itemView.findViewById(R.id.rowType);
-            textViewSize = itemView.findViewById(R.id.rowSize);
-            textViewDuration = itemView.findViewById(R.id.rowDuration);
-            fab = itemView.findViewById(R.id.fab1);
+            this.textViewName = itemView.findViewById(R.id.rowName);
+            this.textViewType = itemView.findViewById(R.id.rowType);
+            this.textViewSize = itemView.findViewById(R.id.rowSize);
+            this.textViewDuration = itemView.findViewById(R.id.rowDuration);
+            this.fab = itemView.findViewById(R.id.fab1);
             itemView.setOnClickListener(this);
         }
         //METHODS
         @Override
         public void onClick(View view) {
-            if (clickListener != null) {
+            if (RecyclerViewAdapter.this.clickListener != null) {       //clickListener field of container class RecyclerViewAdapter
                 view.setBackgroundColor(view.getContext().getResources().getColor(R.color.grigio));
-                clickListener.onItemClick(view, getAdapterPosition());
+                RecyclerViewAdapter.this.clickListener.onItemClick(view, getAdapterPosition());
             }
         }
     }

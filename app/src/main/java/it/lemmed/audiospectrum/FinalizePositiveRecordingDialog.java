@@ -60,7 +60,8 @@ public class FinalizePositiveRecordingDialog implements DialogInterface.OnClickL
                     LogDebug.log("PRESSIONE TASTO POSITIVO");
                     finalizeClick(newFile, oldFile, stripFromExtension(newFile.getName()));
                     //saveFileOnMusicFolder(v, newFile, format);
-                    RecyclerViewPopulator populator = new RecyclerViewPopulator(MainActivity.recyclerView.getContext(), MainActivity.recyclerView);
+                    RecyclerViewPopulator populator = RecyclerViewPopulator.getPopulator(MainActivity.recyclerView);
+                    //RecyclerViewPopulator populator = new RecyclerViewPopulator(MainActivity.recyclerView.getContext(), MainActivity.recyclerView);
                     populator.populateRecyclerView();
                 }
             });
@@ -80,7 +81,8 @@ public class FinalizePositiveRecordingDialog implements DialogInterface.OnClickL
         else {
             finalizeClick(newFile, oldFile, inputString);
             //saveFileOnMusicFolder(v, newFile, format);
-            RecyclerViewPopulator populator = new RecyclerViewPopulator(MainActivity.recyclerView.getContext(), MainActivity.recyclerView);
+            //RecyclerViewPopulator populator = new RecyclerViewPopulator(MainActivity.recyclerView.getContext(), MainActivity.recyclerView);
+            RecyclerViewPopulator populator = RecyclerViewPopulator.getPopulator(MainActivity.recyclerView);
             populator.populateRecyclerView();
         }
     }

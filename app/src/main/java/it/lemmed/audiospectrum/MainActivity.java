@@ -102,30 +102,17 @@ public class MainActivity extends AppCompatActivity {
         //BINDINGS
         button.setOnTouchListener(new RecordingButtonTouchListener());
         RecyclerView recyclerView = findViewById(R.id.filez);
-        recyclerView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
-        //Scroll is handled "externally" with RecyclerViews...
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        recyclerView.computeScroll();
+        //recyclerView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         MainActivity.recyclerView = recyclerView;
+        ImageView imageRefresh = findViewById(R.id.image_refresh);  //Refresh button: pretty useless... It can be useful if you add files while the app is running in development, maybe using Device File Explorer
         //RecyclerViewPopulator object that obviously populate the RecyclerView with audio files from the designated directory of the entire app
-        populator = new RecyclerViewPopulator(this, recyclerView);
+        populator = RecyclerViewPopulator.getPopulator(recyclerView);
         populator.populateRecyclerView();
         //Searchbar handling
         TextView suggestionText = findViewById(R.id.text_suggerition);
         EditText input = findViewById(R.id.searchText);
-        input.addTextChangedListener(new SearchTextWatcher(this, input, suggestionText, recyclerView));        //internally everytime a letter changes, it re-populates the RecyclerView
-        //Pretty useless... It can be useful if you add file while th eapp is running in development, maybe using Device File Explorer
-        ImageView imageRefresh = findViewById(R.id.image_refresh);
+        input.setText("");      //reset
+        input.addTextChangedListener(new SearchTextWatcher(this, input, suggestionText, populator));        //internally everytime a letter changes, it re-populates the RecyclerView
         //Handling record button
         int[][] states = new int[][] {
                 new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
@@ -142,12 +129,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (input.getText().toString().equals("")) {
                     populator.populateRecyclerView();
-                    Toast.makeText(imageRefresh.getContext(), getResources().getString(R.string.main_activity03), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     populator.populateRecyclerView(input.getText().toString());
-                    Toast.makeText(imageRefresh.getContext(), getResources().getString(R.string.main_activity03), Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(imageRefresh.getContext(), getResources().getString(R.string.main_activity03), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -174,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             this.reInitialize();

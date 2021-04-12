@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/text_suggerition"
-                android:layout_width="237dp"
+                android:layout_width="300dp"
                 android:layout_height="39dp"
                 android:gravity="center_vertical"
                 android:text="@string/main_activity02"
@@ -58,7 +58,7 @@
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/searchText"
-                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
@@ -166,6 +166,7 @@
             app:maxImageSize="48dp"
             app:rippleColor="@android:color/transparent"
             app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
