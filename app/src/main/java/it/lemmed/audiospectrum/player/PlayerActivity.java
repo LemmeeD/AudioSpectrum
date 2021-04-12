@@ -169,7 +169,7 @@ public class PlayerActivity extends AppCompatActivity {
         super.onDestroy();
         LogDebug.log("PlayerActivity: onDestroy()");
         this.player = null;
-        this.deallocateBindings();
+        this.deallocateGraphicBindings();
         this.finish();
     }
 
@@ -196,12 +196,12 @@ public class PlayerActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            this.deallocateBindings();
+            this.deallocateAllBindings();
             this.initCreate(this.samplingRate);
             this.reInitResume();
         }
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            this.deallocateBindings();
+            this.deallocateAllBindings();
             this.initCreate(this.samplingRate);
             this.reInitResume();
         }
@@ -290,9 +290,21 @@ public class PlayerActivity extends AppCompatActivity {
         }
         //Handling plots on screen
         if (this.visualizeWaveform) {
+            /*
             //Waveform graph
             this.graph1 = findViewById(R.id.graph_1);
             GraphViewUtils.initWaveformGraph(this.graph1, this.fftSize, this.samplingRate);
+            this.series1 = new LineGraphSeries<>();
+            //style
+            this.series1.setColor(colorWaveform);
+            ((LineGraphSeries<DataPoint>) this.series1).setThickness((int) this.strokeWidth);
+            //binding
+            graph1.addSeries(series1);
+             */
+
+            //Waveform graph
+            this.graph1 = findViewById(R.id.graph_1);
+            GraphViewUtils.init(this.graph1, PlotType.WAVEFORM, this.fftSize, this.samplingRate);
             this.series1 = new LineGraphSeries<>();
             //style
             this.series1.setColor(colorWaveform);
@@ -309,8 +321,8 @@ public class PlayerActivity extends AppCompatActivity {
                 //Magnitude/Phase
                 this.graph2 = findViewById(R.id.graph_2);
                 this.graph3 = findViewById(R.id.graph_3);
-                GraphViewUtils.initFftMagnitudeGraph(this.graph2, this.fftSize, this.samplingRate);
-                GraphViewUtils.initFftPhaseGraph(this.graph3, this.fftSize, this.samplingRate);
+                GraphViewUtils.init(this.graph2, PlotType.FFT_MAGNITUDE, this.fftSize, this.samplingRate);
+                GraphViewUtils.init(this.graph3, PlotType.FFT_PHASE, this.fftSize, this.samplingRate);
                 this.series2 = new LineGraphSeries<>();
                 this.series3 = new LineGraphSeries<>();
                 //styles
@@ -326,8 +338,8 @@ public class PlayerActivity extends AppCompatActivity {
                 //Real/Imaginary parts
                 this.graph2 = findViewById(R.id.graph_2);
                 this.graph3 = findViewById(R.id.graph_3);
-                GraphViewUtils.initFftRealGraph(this.graph2, this.fftSize, this.samplingRate);
-                GraphViewUtils.initFftImagGraph(this.graph3, this.fftSize, this.samplingRate);
+                GraphViewUtils.init(this.graph2, PlotType.FFT_REAL, this.fftSize, this.samplingRate);
+                GraphViewUtils.init(this.graph3, PlotType.FFT_IMAGINARY, this.fftSize, this.samplingRate);
                 this.series2 = new LineGraphSeries<>();
                 this.series3 = new LineGraphSeries<>();
                 //styles
@@ -537,11 +549,15 @@ public class PlayerActivity extends AppCompatActivity {
 
     public void setStringDuration(String duration) { this.stringDuration = duration; }
 
-    protected void deallocateBindings() {
+    protected void deallocateAllBindings() {
         this.visualizer.setEnabled(false);
         this.visualizer.setDataCaptureListener(null, this.rate, false, false);
         this.visualizer.release();
         this.progressBar.setOnSeekBarChangeListener(null);
+        this.deallocateGraphicBindings();
+    }
+
+    protected void deallocateGraphicBindings() {
         this.graph1 = null;
         this.graph2 = null;
         this.graph3 = null;

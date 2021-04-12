@@ -118,5 +118,8 @@
     <string name="utils16">magnitude</string>
     <string name="utils17">phase [rad]</string>
     <string name="utils18">frequency</string>
+    <string name="utils19">Rename to</string>
+    <string name="utils20">Rename \'</string>
+    <string name="utils21">\' as:</string>
 
 </resources>

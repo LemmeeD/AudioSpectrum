@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.P)
 public enum Formats {
+    //ENUMS
     AAC_ELD__THREE_GPP(MediaRecorder.OutputFormat.THREE_GPP , MediaRecorder.AudioEncoder.AAC_ELD , ".3gp"),
     AAC_ELD__AAC(MediaRecorder.OutputFormat.AAC_ADTS , MediaRecorder.AudioEncoder.AAC_ELD , ".aac"),
     AMR_WB__THREE_GPP(MediaRecorder.OutputFormat.THREE_GPP , MediaRecorder.AudioEncoder.AMR_WB, ".3gp"),
@@ -16,16 +17,19 @@ public enum Formats {
     MP3(AudioFormat.ENCODING_MP3, AudioFormat.ENCODING_MP3, ".mp3"),
     WAV(AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_PCM_16BIT, ".wav");
 
+    //FIELDS
     private final int outputFormat;
     private final int audioEncoder;
     private final String extension;
 
+    //CONSTRUCTORS
     Formats(int outputFormat, int audioEncoder, String extension) {
         this.outputFormat = outputFormat;
         this.audioEncoder = audioEncoder;
         this.extension = extension;
     }
 
+    //METHODS
     public String getExtension() { return this.extension; }
 
     public int getOutputFormat() { return this.outputFormat; }

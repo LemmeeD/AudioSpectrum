@@ -74,4 +74,7 @@
     <string name="utils16">modulo</string>
     <string name="utils17">fase [rad]</string>
     <string name="utils18">frequenza</string>
+    <string name="utils19">Rinomina</string>
+    <string name="utils20">Rinominare \'</string>
+    <string name="utils21">\' con:</string>
 </resources>

@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import it.lemmed.audiospectrum.audiocollection.RecyclerViewPopulator;
 import it.lemmed.audiospectrum.settings.Formats;
 

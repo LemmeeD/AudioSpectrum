@@ -9,18 +9,16 @@ public class RowRecord {
     private final String name;
     private final String extension;  //with point
     private final long size;     //which unit?...
-    private final int format;
     private int duration;       //ms
     private String absolutePath;
     private Uri uri;
 
     //CONSTRUCTORS
-    public RowRecord(String name, String extension, long size, int duration, int format, String absPath, Uri uri) {
+    public RowRecord(String name, String extension, long size, int duration, String absPath, Uri uri) {
         this.name = name;
         this.extension = extension;
         this.size = size;
         this.duration = duration;
-        this.format = format;
         this.absolutePath = absPath;
         this.uri = uri;
     }
@@ -39,10 +37,6 @@ public class RowRecord {
     }
 
     public int getDuration() { return this.duration; }
-
-    public int getFormat() {
-        return this.format;
-    }
 
     public String getAbsolutePath() { return this.absolutePath; }
 

@@ -1,21 +1,18 @@
 package it.lemmed.audiospectrum.player;
 
-import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.jjoe64.graphview.GraphView;
-
-public class OnTouchListenerFftImag implements View.OnTouchListener {
+public class GraphViewOnTouchListener implements View.OnTouchListener {
     //FIELDS
-    protected GraphView graph;
+    protected GraphViewWrapperForGridResettingOnDoubleTap wrapper;
     protected GestureDetector doubleTapListener;
 
     //CONSTRUCTORS
-    public OnTouchListenerFftImag(GraphView graph, int captureSize, Context context) {
-        this.graph = graph;
-        this.doubleTapListener = new GestureDetector(context, new ResetDoubleTapListenerFftImag(graph, captureSize));
+    public GraphViewOnTouchListener(GraphViewWrapperForGridResettingOnDoubleTap wrapper) {
+        this.wrapper = wrapper;
+        this.doubleTapListener = new GestureDetector(wrapper.graph.getContext(), new ResetDoubleTapListener(wrapper));
     }
 
     //METHODS
@@ -26,4 +23,3 @@ public class OnTouchListenerFftImag implements View.OnTouchListener {
         return true;
     }
 }
-

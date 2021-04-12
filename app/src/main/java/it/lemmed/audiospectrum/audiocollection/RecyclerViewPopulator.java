@@ -8,8 +8,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
-import it.lemmed.audiospectrum.LogDebug;
 import it.lemmed.audiospectrum.MainActivity;
 import it.lemmed.audiospectrum.player.PlayerActivity;
 import it.lemmed.audiospectrum.utils.ListUtils;

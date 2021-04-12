@@ -147,7 +147,6 @@ public class AudioCollectionProvider {
                             Formats.getExtensionFromFilename(files[i].getName(), true),
                             files[i].length(),
                             FileUtils.getDuration(files[i]),
-                            Formats.getFormatFromFilename(files[i].getName()).getOutputFormat(),
                             files[i].getAbsolutePath(),
                             FileUtils.seekUriFromAbsolutePath(files[i].getAbsolutePath())
                     ));
@@ -178,7 +177,6 @@ public class AudioCollectionProvider {
                                 Formats.getExtensionFromFilename(files[i].getName(), true),
                                 files[i].length(),
                                 FileUtils.getDuration(files[i]),
-                                Formats.getFormatFromFilename(files[i].getName()).getOutputFormat(),
                                 files[i].getAbsolutePath(),
                                 FileUtils.seekUriFromAbsolutePath(files[i].getAbsolutePath())
                         ));
