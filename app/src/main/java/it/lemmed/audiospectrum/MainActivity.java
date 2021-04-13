@@ -66,12 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_ALL);
         button = findViewById(R.id.recording_fab);
-        LogDebug.log("Directory is: " + userDataDirectory);
-
-        //FileUtils.deleteFileWithoutName();
-        //FileUtils.deleteAllFiles(userDataDirectory.getAbsolutePath());
-        //testCallablesCuncurrency();
-
+        System.out.println("Directory is: " + userDataDirectory);
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false);
     }
 

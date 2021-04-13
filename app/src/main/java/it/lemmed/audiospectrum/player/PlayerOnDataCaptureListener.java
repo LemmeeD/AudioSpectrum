@@ -27,18 +27,14 @@ public class PlayerOnDataCaptureListener implements Visualizer.OnDataCaptureList
     }
 
     //METHODS
-    //8 bit: byte waveform: [-128, 128]. byte[] length is captureSize of visualizer object
+    //8 bit: byte waveform is unsigned: [0, 255]. byte in Java is printed like it has a sign. We need a conversion. byte[] length is property captureSize of visualizer object
     @Override
     public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
-        //waveform: [-128, 127]
+        //waveform needs to be: [-128, 127]
         DataPoint[] points = new DataPoint[waveform.length];
         for (int i = 0; i < waveform.length; i++) {
-            if (waveform[i] >= 0) {
-                points[i] = new DataPoint(i, waveform[i]-128);
-            }
-            else {
-                points[i] = new DataPoint(i, waveform[i]+128);
-            }
+            //conversion
+            points[i] = new DataPoint(i, ((int) waveform[i] & 0xFF)-128);       //conversion in int (with sign) is done by: & 0xFF. Then from [0, 255] we go to [-128, 127] changing the mean
         }
         this.seriesWaveform.resetData(points);
     }
@@ -49,7 +45,7 @@ public class PlayerOnDataCaptureListener implements Visualizer.OnDataCaptureList
         int n = fft.length;
         if (visualFftMode) {
             //M/A
-            //magnitude: [0, 256]
+            //magnitude: [0, 255]
             //phase: [-2*Math.PI, 2*Math.PI]
             float[] magnitude = new float[n / 2 + 1];
             DataPoint[] magnitudePoints = new DataPoint[magnitude.length];

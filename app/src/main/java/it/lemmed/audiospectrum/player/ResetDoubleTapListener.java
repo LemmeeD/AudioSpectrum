@@ -5,10 +5,10 @@ import android.view.MotionEvent;
 
 public class ResetDoubleTapListener extends GestureDetector.SimpleOnGestureListener {
     //FIELDS
-    private final GraphViewWrapperForGridResettingOnDoubleTap wrapper;
+    private final GraphViewWrapperForViewportResettingOnDoubleTap wrapper;
 
     //CONSTRUCTORS
-    public ResetDoubleTapListener(GraphViewWrapperForGridResettingOnDoubleTap wrapper) {
+    public ResetDoubleTapListener(GraphViewWrapperForViewportResettingOnDoubleTap wrapper) {
         this.wrapper = wrapper;
     }
 

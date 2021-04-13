@@ -2,13 +2,9 @@ package it.lemmed.audiospectrum.settings;
 
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreferenceCompat;
-
 import it.lemmed.audiospectrum.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {

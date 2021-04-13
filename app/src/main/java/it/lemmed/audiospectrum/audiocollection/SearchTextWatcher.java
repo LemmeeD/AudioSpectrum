@@ -6,12 +6,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
-import it.lemmed.audiospectrum.LogDebug;
 import it.lemmed.audiospectrum.R;
 
 public class SearchTextWatcher implements TextWatcher {

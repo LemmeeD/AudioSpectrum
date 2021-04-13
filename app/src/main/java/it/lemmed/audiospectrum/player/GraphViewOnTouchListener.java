@@ -6,11 +6,11 @@ import android.view.View;
 
 public class GraphViewOnTouchListener implements View.OnTouchListener {
     //FIELDS
-    protected GraphViewWrapperForGridResettingOnDoubleTap wrapper;
+    protected GraphViewWrapperForViewportResettingOnDoubleTap wrapper;
     protected GestureDetector doubleTapListener;
 
     //CONSTRUCTORS
-    public GraphViewOnTouchListener(GraphViewWrapperForGridResettingOnDoubleTap wrapper) {
+    public GraphViewOnTouchListener(GraphViewWrapperForViewportResettingOnDoubleTap wrapper) {
         this.wrapper = wrapper;
         this.doubleTapListener = new GestureDetector(wrapper.graph.getContext(), new ResetDoubleTapListener(wrapper));
     }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class LogDebug {
     public static boolean DEBUGGING = true;
-    public static String TAG = "666666";
+    public static String TAG = "DEBUG";
 
     public static void log(String string) {
         if (DEBUGGING) {

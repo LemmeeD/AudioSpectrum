@@ -91,7 +91,6 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogDebug.log("PlayerActivity: onCreate()");
         this.initCreate(-1);
 
         /*
@@ -114,7 +113,6 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LogDebug.log("PlayerActivity: onStart()");
     }
 
     @SuppressLint("SetTextI18n")
@@ -122,14 +120,12 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogDebug.log("PlayerActivity: onResume()");
         this.initResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogDebug.log("PlayerActivity: onPause()");
         if (this.player.isPlaying()) {
             this.currentPosition = this.player.getCurrentPosition();
             this.player.pause();
@@ -145,16 +141,13 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LogDebug.log("PlayerActivity: onStop()");
         try {
             this.player.stop();
         }
         catch (IllegalStateException e) {
-            LogDebug.log(e.getMessage());
             LogDebug.log("PlayerActivity: onStop --> "+e.getMessage());
         }
         catch (NullPointerException e) {
-            LogDebug.log(e.getMessage());
             LogDebug.log("PlayerActivity: onStop --> "+e.getMessage());
         }
         this.visualizer.setDataCaptureListener(null, this.rate, false, false);
@@ -167,7 +160,6 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogDebug.log("PlayerActivity: onDestroy()");
         this.player = null;
         this.deallocateGraphicBindings();
         this.finish();
@@ -210,7 +202,6 @@ public class PlayerActivity extends AppCompatActivity {
     //AUXILIARY METHODS
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initCreate(int sampleRate) {       //int argument not very elegant..
-        LogDebug.log("PlayerActivity: initCreate()");
         setContentView(R.layout.activity_player);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_player);
         setSupportActionBar(toolbar);
@@ -254,7 +245,6 @@ public class PlayerActivity extends AppCompatActivity {
             this.stringDuration = getIntent().getStringExtra("duration");
         }
         else {
-            LogDebug.log("TEEEEEEEEST");
             this.firstStart = false;
             //means that the configuration was changed and to reset everything we don't want to use the information of the intent which was the initial song that was meant to be played,
             //because maybe the next/previous button was pressed. So we want the next/previous if it was selected. In that case the 4 variable are set externally through the setter methods of this activity
@@ -265,7 +255,6 @@ public class PlayerActivity extends AppCompatActivity {
         int colorWaveform = Integer.parseInt(preferences.getString("key_color_waveform", "-16776961"));
         int colorFft2 = Integer.parseInt(preferences.getString("key_color_fft1", "-65536"));
         int colorFft3 = Integer.parseInt(preferences.getString("key_color_fft2", "-19456"));
-        LogDebug.log("TEST: SeekBarPreference = "+preferences.getInt("test", 2)+", so after conversion is = "+NumberUtils.returnStrokeWidth(preferences.getInt("test", 2)));
         this.strokeWidth = NumberUtils.returnStrokeWidth(preferences.getInt("test", 2));
         this.visualizeWaveform = preferences.getBoolean("key_visualization_waveform", true);
         this.visualizeFft = preferences.getBoolean("key_visualization_fft", true);
@@ -362,7 +351,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initResume() {
-        LogDebug.log("PlayerActivity: initResume()");
         //Handling playback
         this.player = MediaPlayer.create(this, FileUtils.seekUriFromFilename(this.filename));
         if ( !(this.currentPosition < 0) ) {
@@ -462,7 +450,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void reInitResume() {
-        LogDebug.log("PlayerActivity: reInitResume()");
         //slightly different from initResume()... Without comments
         this.progressBar.setProgress(this.player.getCurrentPosition());
         this.visualizer = new Visualizer(this.player.getAudioSessionId());

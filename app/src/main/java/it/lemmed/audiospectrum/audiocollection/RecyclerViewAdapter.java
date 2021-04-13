@@ -120,19 +120,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         String newFilename = input.getText().toString();
                         String newName = newFilename + rowRecord.getExtension();
                         if (newName.equals("")) {
-                            Toast.makeText(v.getContext(), "Invalid name...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), v.getResources().getString(R.string.utils22), Toast.LENGTH_SHORT).show();
                         }
                         else if (newName.equals(oldName)) {
-                            Toast.makeText(v.getContext(), "New name must be different from previous...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), v.getResources().getString(R.string.utils23), Toast.LENGTH_SHORT).show();
                         }
                         else {
                             final File oldFile = new File(MainActivity.userDataDirectory, oldName);
                             final File newFile = new File(MainActivity.userDataDirectory, newName);
                             if (oldFile.renameTo(newFile)) {
-                                Toast.makeText(v.getContext(), "Renamed correctly...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(v.getContext(), v.getResources().getString(R.string.utils24), Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(v.getContext(), "Renamed didn't go well...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(v.getContext(), v.getResources().getString(R.string.utils25), Toast.LENGTH_SHORT).show();
                             }
                         }
                         dialog.cancel();

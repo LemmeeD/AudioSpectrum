@@ -2,7 +2,7 @@ package it.lemmed.audiospectrum.player;
 
 import com.jjoe64.graphview.GraphView;
 
-public abstract class GraphViewWrapperForGridResettingOnDoubleTap {
+public abstract class GraphViewWrapperForViewportResettingOnDoubleTap {
     //FIELDS
     protected GraphView graph;
     protected int captureSize;
@@ -10,7 +10,7 @@ public abstract class GraphViewWrapperForGridResettingOnDoubleTap {
     protected PlotType plotType;
 
     //CONSTRUCTORS
-    public GraphViewWrapperForGridResettingOnDoubleTap(GraphView graph, int captureSize, int samplingRate, PlotType plotType) {
+    public GraphViewWrapperForViewportResettingOnDoubleTap(GraphView graph, int captureSize, int samplingRate, PlotType plotType) {
         this.graph = graph;
         this.captureSize = captureSize;
         this.samplingRate = samplingRate;

@@ -76,4 +76,8 @@
     <string name="utils19">Rename to</string>
     <string name="utils20">Rename \'</string>
     <string name="utils21">\' as:</string>
+    <string name="utils22">Invalid name</string>
+    <string name="utils23">New name must differs from the previous one</string>
+    <string name="utils24">File renamed correctly</string>
+    <string name="utils25">Rename didn\'t went well</string>
 </resources>
