@@ -92,22 +92,6 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.initCreate(-1);
-
-        /*
-        String id = "666666";
-        NotificationChannel nc = new NotificationChannel(id, "Bar player notification", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(nc);
-        Notification notification = new Notification.Builder(this, id)
-                .setSmallIcon(R.drawable.ic_baseline_play_circle_6)
-                .setContentTitle("My notification")
-                .setContentText("Much longer text that cannot fit one line...")
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .build();
-
-
-        this.tempIntent = initServiceMediaPlayer(this, this.filename);
-         */
     }
 
     @Override
@@ -279,18 +263,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
         //Handling plots on screen
         if (this.visualizeWaveform) {
-            /*
-            //Waveform graph
-            this.graph1 = findViewById(R.id.graph_1);
-            GraphViewUtils.initWaveformGraph(this.graph1, this.fftSize, this.samplingRate);
-            this.series1 = new LineGraphSeries<>();
-            //style
-            this.series1.setColor(colorWaveform);
-            ((LineGraphSeries<DataPoint>) this.series1).setThickness((int) this.strokeWidth);
-            //binding
-            graph1.addSeries(series1);
-             */
-
             //Waveform graph
             this.graph1 = findViewById(R.id.graph_1);
             GraphViewUtils.init(this.graph1, PlotType.WAVEFORM, this.fftSize, this.samplingRate);
@@ -356,6 +328,8 @@ public class PlayerActivity extends AppCompatActivity {
         if ( !(this.currentPosition < 0) ) {
             this.player.seekTo(this.currentPosition);
         }
+        Visualizer visualizer = new Visualizer(this.player.getAudioSessionId());
+        visualizer.release();
         this.visualizer = new Visualizer(this.player.getAudioSessionId());
         this.visualizer.setCaptureSize(this.fftSize);
         /*

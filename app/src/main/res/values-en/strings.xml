@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Audio Spectrum</string>
-    <string name="main_label">Home</string>
+    <string name="main_label">Audio Spectrum</string>
     <string name="settings_label">Settings</string>
     <string name="player_label">Player</string>
     <string name="pref_cat01_name">Visualization</string>

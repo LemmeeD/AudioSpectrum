@@ -13,7 +13,7 @@ public class PlayerOnDataCaptureListener implements Visualizer.OnDataCaptureList
     private final BaseSeries seriesWaveform;
     private final BaseSeries seriesFft1;
     private final BaseSeries seriesFft2;
-    private final boolean visualFftMode;    //true = visualize Fft as Magnitude/Phase, real/Imag otherwise
+    private final boolean visualFftMode;    //true = visualize Fft as Magnitude/Phase, real/imag otherwise
 
     //CONSTRUCTORS
     public PlayerOnDataCaptureListener(GraphView graphWaveform, GraphView graphFft1, GraphView graphFft2, BaseSeries seriesWaveform, BaseSeries seriesFft1, BaseSeries seriesFft2, boolean visualModeFft) {
@@ -39,7 +39,7 @@ public class PlayerOnDataCaptureListener implements Visualizer.OnDataCaptureList
         this.seriesWaveform.resetData(points);
     }
 
-    //8 bit: byte fft: [-128, 128]
+    //8 bit: byte fft: [-128, 127]
     @Override
     public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
         int n = fft.length;

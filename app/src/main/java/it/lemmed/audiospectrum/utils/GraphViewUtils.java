@@ -15,6 +15,7 @@ public class GraphViewUtils {
                 this.plotType.resetViewport(this.graph.getViewport(), this.captureSize, this.samplingRate);
             }
         };
+        wrapper.reset();
         wrapper.setGridFormatter();
         wrapper.setDoubleTapListenerForResettingViewport();
     }
