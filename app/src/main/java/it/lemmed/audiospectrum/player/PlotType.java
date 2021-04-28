@@ -3,6 +3,8 @@ package it.lemmed.audiospectrum.player;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+
 import it.lemmed.audiospectrum.R;
 import it.lemmed.audiospectrum.utils.StringUtils;
 
@@ -18,7 +20,6 @@ public enum PlotType {
     protected String name;
 
     //CONSTRUCTORS
-
     PlotType(String name) {
         this.name = name;
     }
@@ -103,26 +104,14 @@ public enum PlotType {
                 @Override
                 public String formatLabel(double value, boolean isValueX) {
                     if (isValueX) {
-                        if (value == 0) {
-                            //return super.formatLabel(value, isValueX);
-                            return "";
-                        }
-                        else {
-                            return "";
-                        }
+                        return super.formatLabel(value, false);
                     }
                     else {
                         if (value == 0) {
                             return "0";
                         }
-                        else if (value == 127) {
-                            return "max";
-                        }
-                        else if (value == -128) {
-                            return "min";
-                        }
                         else {
-                            return "";
+                            return super.formatLabel(value, false);
                         }
                     }
                 }
@@ -140,30 +129,23 @@ public enum PlotType {
             graph.getGridLabelRenderer().setTextSize(17.5f);
             graph.getGridLabelRenderer().setVerticalAxisTitle(graph.getContext().getResources().getString(R.string.utils15));
             graph.getGridLabelRenderer().setHorizontalAxisTitle(graph.getContext().getResources().getString(R.string.utils18));
-
             graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                 @Override
                 public String formatLabel(double value, boolean isValueX) {
                     if (isValueX) {
                         if (value == 0) {
-                            return "0 DC";
-                        }
-                        else if (value == captureSize) {
-                            return "Pi";
+                            return "DC";
                         }
                         else {
-                            return StringUtils.returnStringifiedFrequency((value*samplingRate) / captureSize);
+                            return StringUtils.returnStringifiedFrequency((value * samplingRate) / captureSize);
                         }
                     }
                     else {
                         if (value == 0) {
                             return "0";
                         }
-                        else if (value == 256) {
-                            return "max";
-                        }
                         else {
-                            return "";
+                            return super.formatLabel(value, false);
                         }
                     }
                 }
@@ -186,10 +168,7 @@ public enum PlotType {
                 public String formatLabel(double value, boolean isValueX) {
                     if (isValueX) {
                         if (value == 0) {
-                            return "0 DC";
-                        }
-                        else if (value == captureSize) {
-                            return "Pi";
+                            return "DC";
                         }
                         else {
                             return StringUtils.returnStringifiedFrequency((value*samplingRate) / captureSize);
@@ -199,14 +178,8 @@ public enum PlotType {
                         if (value == 0) {
                             return "0";
                         }
-                        else if (value == -2*Math.PI) {
-                            return "2*pi";
-                        }
-                        else if (value == 2*Math.PI) {
-                            return "-2*pi";
-                        }
                         else {
-                            return "";
+                            return super.formatLabel(value, false);
                         }
                     }
                 }
@@ -229,10 +202,7 @@ public enum PlotType {
                 public String formatLabel(double value, boolean isValueX) {
                     if (isValueX) {
                         if (value == 0) {
-                            return "0 DC";
-                        }
-                        else if (value == captureSize) {
-                            return "Pi";
+                            return "DC";
                         }
                         else {
                             return StringUtils.returnStringifiedFrequency((value*samplingRate) / captureSize);
@@ -242,14 +212,8 @@ public enum PlotType {
                         if (value == 0) {
                             return "0";
                         }
-                        else if (value == -128) {
-                            return "min";
-                        }
-                        else if (value == 127) {
-                            return "max";
-                        }
                         else {
-                            return "";
+                            return super.formatLabel(value, false);
                         }
                     }
                 }
@@ -272,10 +236,7 @@ public enum PlotType {
                 public String formatLabel(double value, boolean isValueX) {
                     if (isValueX) {
                         if (value == 0) {
-                            return "0 DC";
-                        }
-                        else if (value == captureSize) {
-                            return "Pi";
+                            return "DC";
                         }
                         else {
                             return StringUtils.returnStringifiedFrequency((value*samplingRate) / captureSize);
@@ -285,14 +246,8 @@ public enum PlotType {
                         if (value == 0) {
                             return "0";
                         }
-                        else if (value == -128) {
-                            return "min";
-                        }
-                        else if (value == 127) {
-                            return "max";
-                        }
                         else {
-                            return "";
+                            return super.formatLabel(value, false);
                         }
                     }
                 }
